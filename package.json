@@ -1,0 +1,34 @@
+{
+  "name": "smstunnel-action",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action: send a text from your own Android phone, from your own number, with SMSTunnel.",
+  "type": "module",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Narcis Bodea",
+    "email": "contact@narboweb.ro",
+    "url": "https://smstunnel.io"
+  },
+  "homepage": "https://github.com/narcisbodea/smstunnel-action#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/narcisbodea/smstunnel-action.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "ncc build src/index.js --out dist --license licenses.txt",
+    "test": "node --test test/*.test.js",
+    "test:e2e": "node --test test/e2e/*.test.js",
+    "all": "npm run build && npm test"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.45.0"
+  }
+}

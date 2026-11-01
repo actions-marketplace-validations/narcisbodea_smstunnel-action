@@ -1,0 +1,42 @@
+name: SMSTunnel SMS
+description: Send a text from your own Android phone, from your own number, with SMSTunnel. For alerts on failed deployments, releases and sign-in codes.
+author: NARBOWEB SRL
+
+branding:
+  icon: message-square
+  color: blue
+
+inputs:
+  api-key:
+    description: Your SMSTunnel API key (sk_live_...), from Apps → Add an app in your SMSTunnel dashboard. Keep it in a repository secret, such as SMSTUNNEL_API_KEY.
+    required: true
+  to:
+    description: The number to text, in international format (+14155550123). Several numbers, separated by commas or new lines, get one text each (at most 30). In a public repository, keep the numbers in a secret too.
+    required: true
+  message:
+    description: The text, up to 1600 characters (320 with code true).
+    required: true
+  device-id:
+    description: Send through this phone (its ID is under Phones in your SMSTunnel dashboard). Empty lets SMSTunnel pick one of your phones.
+    required: false
+    default: ''
+  default-country-code:
+    description: For example +40. Completes numbers written without + or 00.
+    required: false
+    default: ''
+  code:
+    description: true sends a sign-in code to one number. The text must contain the code, 4 to 10 digits standing on their own (e.g. 482913); codes count against a separate quota.
+    required: false
+    default: 'false'
+  server-url:
+    description: Only for a self-hosted SMSTunnel or a test server.
+    required: false
+    default: https://smstunnel.io
+
+outputs:
+  message-ids:
+    description: The IDs of the texts, comma-separated, in the order of the numbers (empty for a number that got no text).
+
+runs:
+  using: node24
+  main: dist/index.js

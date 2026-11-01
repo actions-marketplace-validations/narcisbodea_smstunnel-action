@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests and dist/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: dist/ matches the source
+        run: |
+          npm run build
+          if ! git diff --quiet -- dist/; then
+            git diff --stat -- dist/
+            echo "::error::dist/ is out of date. Run npm run build and commit dist/."
+            exit 1
+          fi
+
+  self-test:
+    name: Run the action against a stand-in API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Start a stand-in SMSTunnel API
+        run: |
+          node test/fixtures/fake-api.js > fake-api.log 2>&1 &
+          for i in $(seq 1 50); do [ -s fake-api.port ] && break; sleep 0.1; done
+          echo "FAKE_API=http://127.0.0.1:$(cat fake-api.port)" >> "$GITHUB_ENV"
+      - id: sms
+        uses: ./
+        with:
+          api-key: sk_live_ci_stand_in_key_00000000000000000
+          to: |
+            +14155550123
+            +14155550124
+          message: CI self-test of ${{ github.sha }}
+          server-url: ${{ env.FAKE_API }}
+      - name: The output has one id per number
+        env:
+          IDS: ${{ steps.sms.outputs.message-ids }}
+        run: |
+          cat fake-api.log
+          test "$IDS" = "ci-1,ci-2"
