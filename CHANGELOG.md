@@ -3,6 +3,12 @@
 All notable changes to `narcisbodea/smstunnel-action` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-02
+
+### Changed
+
+- A shorter description in `action.yml` (114 characters), within the GitHub Marketplace limit of 125.
+
 ## [1.0.0] - 2026-11-01
 
 ### Added

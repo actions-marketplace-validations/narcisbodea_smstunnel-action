@@ -1,5 +1,5 @@
 name: SMSTunnel SMS
-description: Send a text from your own Android phone, from your own number, with SMSTunnel. For alerts on failed deployments, releases and sign-in codes.
+description: Send a text from your own Android phone and number with SMSTunnel, for failed deploys, releases and sign-in codes.
 author: NARBOWEB SRL
 
 branding:

@@ -1,6 +1,6 @@
 {
   "name": "smstunnel-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "GitHub Action: send a text from your own Android phone, from your own number, with SMSTunnel.",
   "type": "module",
